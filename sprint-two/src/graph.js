@@ -13,16 +13,22 @@ Graph.prototype.contains = function(node){
 };
 
 Graph.prototype.removeNode = function(node){
+  for (var neighbor in this.nodes){
+    this.removeEdge(neighbor, node);
+  }
   delete this.nodes[node];
 };
 
 Graph.prototype.hasEdge = function(fromNode, toNode){
-  return _.contains(this.nodes[fromNode].neighbours, toNode);
+  return this.contains(fromNode) ? _.contains(this.nodes[fromNode].neighbours, toNode)
+: false;
 };
 
 Graph.prototype.addEdge = function(fromNode, toNode){
-  this.nodes[fromNode].neighbours[toNode] = toNode;
-  this.nodes[toNode].neighbours[fromNode] = fromNode;
+  if (this.contains(fromNode) && this.contains(toNode)){
+    this.nodes[fromNode].neighbours[toNode] = toNode;
+    this.nodes[toNode].neighbours[fromNode] = fromNode;
+  }
 };
 
 Graph.prototype.removeEdge = function(fromNode, toNode){

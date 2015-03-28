@@ -32,6 +32,7 @@ describe('graph', function() {
     graph.addNode('kittens');
     graph.addNode('penguins');
     graph.addEdge('penguins', 'puppies');
+    graph.addEdge('octopus', 'puppies');
     expect(graph.hasEdge('penguins', 'puppies')).to.equal(true);
     expect(graph.hasEdge('penguins', 'kittens')).to.equal(false);
   });
@@ -41,6 +42,8 @@ describe('graph', function() {
     graph.addNode('satsumas');
     graph.addEdge('satsumas', 'apples');
     expect(graph.hasEdge('apples', 'satsumas')).to.equal(true);
+    graph.removeEdge('apples', 'satsumas');
+    expect(graph.hasEdge('apples', 'satsumas')).to.equal(false);
   });
 
   it('should execute a callback on each node in the graph', function() {
@@ -56,5 +59,15 @@ describe('graph', function() {
     expect(graph.hasEdge('kittens', 'satsumas')).to.equal(true);
     expect(graph.hasEdge('penguins', 'satsumas')).to.equal(true);
     expect(graph.hasEdge('satsumas', 'satsumas')).to.equal(true);
+  });
+
+  it('should remove all edges to a deleted node', function(){
+    graph.addNode('puppies');
+    graph.addNode('penguins');
+    graph.addEdge('puppies', 'penguins');
+    graph.removeNode('puppies');
+    expect(graph.contains('puppies')).to.equal(false);
+    expect(graph.hasEdge('puppies', 'penguins')).to.equal(false);
+    expect(graph.hasEdge('penguins', 'puppies')).to.equal(false);
   });
 });
